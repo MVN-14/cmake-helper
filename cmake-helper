@@ -1,5 +1,11 @@
 #!/usr/bin/bash
 
+# File:     cmake-helper
+# Author:   Michael Nogueira
+# Date:     2023/11/06
+# Purpose:  to simplify development with cmake
+
+
 usage() {
   echo "usage: cmake-helper <[-g][-c][-b][-r:target]>
   -g          generate CMAKELists.txt
