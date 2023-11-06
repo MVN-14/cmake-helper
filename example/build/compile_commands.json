@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/home/mvn/Dev/bash/cmake-helper/example/build",
+  "command": "/usr/bin/c++    -o CMakeFiles/example.dir/main.cpp.o -c /home/mvn/Dev/bash/cmake-helper/example/main.cpp",
+  "file": "/home/mvn/Dev/bash/cmake-helper/example/main.cpp",
+  "output": "CMakeFiles/example.dir/main.cpp.o"
+}
+]

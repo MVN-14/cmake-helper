@@ -7,26 +7,30 @@
 
 
 usage() {
-  echo "usage: cmake-helper <[-g][-c][-b][-r:target]>
+  echo "usage: cmake-helper [-gcbr] [target]
   -g          generate CMAKELists.txt
   -c          delete build folder
   -b          generate and build cmake files
-  -r <target> run target executable"
+  -r <target> run target executable
+
+  *target argument only required if -r flag is provided"
 }
 
 generate-cmakelists() {
   PROJECT_NAME=$1
   INCLUDE_DIR=$2
   SRC_DIR=$3
+  SRC_FILE=$4
   [[ -z "$SRC_DIR" ]] && SRC_DIR="."
+  [[ -z "$SRC_FILE" ]] && SRC_FILE="main.cpp"
   [[ -n "$INCLUDE_DIR" ]] && INCLUDE_LINE="include_directories($INCLUDE_DIR)"
-
+  
   printf "cmake_minimum_required(VERSION 3.0.0)
 project($PROJECT_NAME VERSION 0.0.1)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 $INCLUDE_LINE
-add_executable(\${PROJECT_NAME} $SRC_DIR/main.cpp)" >> CMakeLists.txt
+add_executable(\${PROJECT_NAME} $SRC_DIR/$SRC_FILE)" >> CMakeLists.txt
 }
 
 [[ -z "$1" ]] && usage
@@ -37,8 +41,8 @@ while getopts 'gcbr:' OPTION; do
       read -p "Enter Project Name (no spaces): " PROJECT_NAME
       read -p "include dir (leave blank to use root): " INCLUDE_DIR
       read -p "src dir (leave blank to use root): " SRC_DIR
-
-      generate-cmakelists $PROJECT_NAME $INCLUDE_DIR $SRC_DIR ;;
+      read -p "src file (leave blank to use main.cpp): " SRC_FILE
+      generate-cmakelists $PROJECT_NAME $INCLUDE_DIR $SRC_DIR $SRC_FILE ;;
     c)
       [[ -d "./build" ]] && rm -rf "./build" && echo "Deleted ./build folder..." ;;
     b)	
