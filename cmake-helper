@@ -25,7 +25,9 @@ generate-cmakelists() {
   [[ -z "$SRC_FILE" ]] && SRC_FILE="main.cpp"
   [[ -n "$INCLUDE_DIR" ]] && INCLUDE_LINE="include_directories($INCLUDE_DIR)"
   
-  printf "cmake_minimum_required(VERSION 3.0.0)
+  [[ -f "CMakeLists.txt" ]] && rm "./CMakeLists.txt" && echo "Deleted old CMakeLists.txt"
+
+  printf "cmake_minimum_required(VERSION 3.0)
 project($PROJECT_NAME VERSION 0.0.1)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -38,6 +40,10 @@ add_executable(\${PROJECT_NAME} $SRC_DIR/$SRC_FILE)" >> CMakeLists.txt
 while getopts 'gcbr:' OPTION; do
   case "$OPTION" in
     g)
+      if [[ -f "CMakeLists.txt" ]] ; then 
+        read -p "CMakeLists.txt already exists, regenerate? (N/y): " OVERWRITING
+        [[ "$OVERWRITING" != [Yy] ]] && exit
+      fi  
       read -p "Enter Project Name (no spaces): " PROJECT_NAME
       read -p "include dir (leave blank to use root): " INCLUDE_DIR
       read -p "src dir (leave blank to use root): " SRC_DIR
